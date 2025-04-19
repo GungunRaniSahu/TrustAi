@@ -1,8 +1,12 @@
-   body {
+   html,body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9f9f9;
+      background-color: rgba(0, 0, 0, 0); /* Transparent background */
       margin: 0;
       padding: 0;
+      width: 350px; /* Or any consistent width */
+      min-width: 600px;
+      max-width: 350px;
+      overflow-x: hidden;
     }
 
     .container {
