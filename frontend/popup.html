@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TrustAI Advisor</title>
+  <link rel="shortcut icon" href="shield.png" type="image/x-icon">
   <link rel="stylesheet" href="popup.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -14,8 +15,8 @@
       <img src="shield.png" alt="Logo" />
       <h1>TrustAI</h1>
       <div class="icons">
-        <i class="fas fa-cog"></i>
-        <i class="fas fa-times"></i>
+        <i class="fas fa-cog" id="settings-icon"></i>
+        <i class="fas fa-times" id="close-icon"></i>
       </div>
     </div>
 
@@ -31,13 +32,17 @@
       </svg>
       <span class="text">Check Trust</span>
     </button>
-
+  <!-- Settings Panel (hidden by default) -->
+  <div id="settings-panel" style="display:none;">
+    <!-- Add your settings options here -->
+    <h2>Settings</h2>
+    <p>Some settings...</p>
+  </div>
     <div class="footer">
       Version 1.0.0 | 
       <a href="#" style="color:#3b82f6; text-decoration: none;">Privacy</a>
     </div>
   </div>
-
   <script src="popup.js"></script>
 </body>
 </html>
