@@ -43,15 +43,15 @@ FS Module  | To read saved website HTML from local files
  Tools & Libraries:
 
 Tool/Library	Purpose
-1.openai	     To connect with GPT-4 (AI brain)
+1.openai	     To connect with GPT-4o (AI brain)
 2.cheerio	     To read and extract content from website HTML
 3.fs	         To load the HTML file from your system
 4.requests       To retrive or scrape the HTML content of the website
 5.beautifulsoup  To clean the scrraped HTML data 
 
  How AI Helps:
-We send important website content (like reviews, refund policies, etc.) to GPT-4. 
-GPT-4 checks for good and bad signs and replies with a summary.
+We send important website content (like reviews, refund policies, etc.) to GPT-4o. 
+GPT-4o checks for good and bad signs and replies with a summary.
 We ask it to give a simple YES/NO-style recommendation + suggestions.
 
  How the System Works
@@ -64,7 +64,7 @@ Here's the full step-by-step process:
 Customer reviews , Contact details , Refund or return policies , Trust badges (like SSL Secure) , Social media links
 
  The extracted content is sent to GPT-4 through the OpenAI API.
- GPT-4 replies with a summary: “This site looks safe,” or “Please research more before trusting this site.”
+ GPT-4o replies with a summary: “This site looks safe,” or “Please research more before trusting this site.”
 
  The summary is printed for the user to read.
 
