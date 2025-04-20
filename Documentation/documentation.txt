@@ -1,5 +1,5 @@
-🛡️ TrustAI Advisor – Simple Technical Documentation
-📌 Problem Statement
+TrustAI Advisor – Simple Technical Documentation
+Problem Statement
 Today, many people shop online — but not all websites are safe. Some fake websites look real and attractive by:
 
 Showing huge discounts like "90% OFF!"
@@ -10,9 +10,11 @@ Hiding real contact or refund details
 
 Using scammy payment methods
 
+and not being honest to their job 
+
 People often fall for these tricks and lose money or personal info. We needed a smart solution to check if a website is trustworthy before ordering.
 
-💡 Our Solution: TrustAI Advisor
+Our Solution: TrustAI Advisor
 TrustAI Advisor is a tool that uses Artificial Intelligence (AI) to analyze any shopping website and tells users:
 
 Whether the website is safe for online shopping
@@ -24,48 +26,49 @@ What things are suspicious (red flags)
 It gives a human-like summary in simple words to help users decide:
 "Is this website trustworthy or risky?"
 
-🧠 AI Model and Tools Used
-We used OpenAI’s GPT-4 model to do the trust analysis.
+AI Model and Tools Used
+We used OpenAI’s GPT-4o model to do the trust analysis.
 
-🔧 Tools & Libraries:
+Tech Stack
+Technology | Purpose
+HTML + CSS | For the structure and styling of web-based components
+JavaScript | For adding dynamic behavior to the webpage
+Node.js    | Server-side JavaScript to run logic
+Express.js | To handle routing and API endpoints
+Python     | For additional analysis (e.g., review or sentiment detection, future AI plans)
+OpenAI     | The brain of the system – it evaluates and writes trust summaries
+Cheerio.js | To extract data from website HTML files
+FS Module  | To read saved website HTML from local files
+
+ Tools & Libraries:
 
 Tool/Library	Purpose
-openai	To connect with GPT-4 (AI brain)
-cheerio	To read and extract content from website HTML
-fs	To load the HTML file from your system
-👩‍💻 How AI Helps:
-We send important website content (like reviews, refund policies, etc.) to GPT-4.
+1.openai	     To connect with GPT-4 (AI brain)
+2.cheerio	     To read and extract content from website HTML
+3.fs	         To load the HTML file from your system
+4.requests       To retrive or scrape the HTML content of the website
+5.beautifulsoup  To clean the scrraped HTML data 
 
+ How AI Helps:
+We send important website content (like reviews, refund policies, etc.) to GPT-4. 
 GPT-4 checks for good and bad signs and replies with a summary.
-
 We ask it to give a simple YES/NO-style recommendation + suggestions.
 
-⚙️ How the System Works
+ How the System Works
 Here's the full step-by-step process:
 
-💻 You save the HTML of any shopping website you want to check.
+ You save the HTML of any shopping website you want to check.
+ Our code opens this HTML file.
+ It uses cheerio to look for useful things like:
 
-📄 Our code opens this HTML file.
+Customer reviews , Contact details , Refund or return policies , Trust badges (like SSL Secure) , Social media links
 
-🕵️ It uses cheerio to look for useful things like:
+ The extracted content is sent to GPT-4 through the OpenAI API.
+ GPT-4 replies with a summary: “This site looks safe,” or “Please research more before trusting this site.”
 
-Customer reviews
+ The summary is printed for the user to read.
 
-Contact details
-
-Refund or return policies
-
-Trust badges (like SSL Secure)
-
-Social media links
-
-📬 The extracted content is sent to GPT-4 through the OpenAI API.
-
-🧠 GPT-4 replies with a summary: “This site looks safe,” or “Please research more before trusting this site.”
-
-✅ The summary is printed for the user to read.
-
-🌱 Future Improvements
+ Future Improvements
 Here’s how we can make TrustAI Advisor better:
 
 Live Site Checker – Instead of uploading HTML, fetch website data automatically.
@@ -80,7 +83,7 @@ Report Button – Let users report fake sites to build a safe shopping database.
 
 Fake Review Detection – Analyze patterns to catch copied or AI-generated reviews.
 
-✅ Summary (Why It’s Useful)
+ Summary (Why It’s Useful)
 Saves users from fake online stores.
 
 Uses smart AI to give easy answers.
