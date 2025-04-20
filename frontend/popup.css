@@ -79,9 +79,9 @@
 /* From Uiverse.io by AlimurtuzaCodes */ 
 .btn {
   border: none;
-  width: 15em;
-  height: 5em;
-  border-radius: 3em;
+  width: 10em;
+  height: 2em;
+  border-radius: 10em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,3 +120,47 @@
   fill: white;
   transform: scale(1.2);
 } 
+    /* Dark mode styles for container only */
+    .container.dark-mode {
+      background-color: #1e1e1e;
+      color: #f5f5f5;
+    }
+
+    .container.dark-mode .btn {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .container.dark-mode .footer a {
+      color: #90cdf4;
+    }
+
+    .container.dark-mode .sparkle {
+      fill: #facc15;
+    }
+
+    .dark-mode-toggle {
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .container {
+      transition: background-color 0.3s, color 0.3s;
+    }
+       /* Flexbox to align items in rows */
+        #result {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .result-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .icon {
+            margin-right: 10px;
+        }
+        .text {
+            font-size: 14px;
+        }
