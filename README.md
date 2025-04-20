@@ -23,8 +23,6 @@ A GPT-powered trust evaluator for checking if e-commerce sites are safe for Cash
 ---
 
 ## Installation & Setup
-
-
 ---
 
 ## 🛠️ How to Install TrustAI Advisor (Chrome Extension) from GitHub
