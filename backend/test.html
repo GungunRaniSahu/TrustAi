@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TrustAI Advisor Setup</title>
+  <link rel="stylesheet" href="./test.css">
+</head>
+<body>
+  <h1>🚀 Install TrustAI Advisor</h1>
+  <p>Follow each step and click "Yes" to continue 👇</p>
+
+  <a href="https://github.com/GungunRaniSahu/TrustAi/archive/refs/heads/main.zip" download>
+    <button>⬇️ Download Extension ZIP</button>
+  </a>
+  
+
+  <div id="step1" class="step" style="display:block;">
+    <p>📁 Step 1: Have you downloaded and extracted the ZIP file?</p>
+    <button onclick="showNext('step2')">Yes</button>
+  </div>
+
+  <div id="step2" class="step">
+    <p>🌐 Step 2: Open <code>chrome://extensions/</code> in Chrome</p>
+    <button onclick="showNext('step3')">Yes</button>
+  </div>
+
+  <div id="step3" class="step">
+    <p>🛠️ Step 3: Enable <strong>Developer Mode</strong> in the top-right corner</p>
+    <button onclick="showNext('step4')">Yes</button>
+  </div>
+
+  <div id="step4" class="step">
+    <p>📂 Step 4: Click <strong>“Load unpacked”</strong> and select the extracted folder where all the main files are present</p>
+    <button onclick="showNext('step5')">Yes</button>
+  </div>
+
+  <div id="step5" class="step">
+    <p>🎉 Step 5: Done! TrustAI is now installed and ready to analyze trust on COD websites!</p>
+  </div>
+
+  <script src="./test.js">
+ 
+  </script>
+</body>
+</html>
