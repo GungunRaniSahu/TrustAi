@@ -12,9 +12,6 @@
     "http://*/*",
     "https://*/*"
   ],
-  "background": {
-    "service_worker": "frontend/background.js"
-  },
   "action": {
     "default_popup": "frontend/popup.html",
     "default_icon": {
@@ -35,8 +32,12 @@
     "128": "frontend/shield.png"
   },
   "content_security_policy": {
-  "extension_pages": "script-src 'self'; object-src 'self'",
-  "worker-src": "'self'"
-}
-
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["frontend/url.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
