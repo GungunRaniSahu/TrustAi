@@ -6,130 +6,44 @@
   <title>TrustAI Advisor</title>
   <link rel="stylesheet" href="popup.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    /* Dark mode styles for container only */
-    .container.dark-mode {
-      background-color: #1e1e1e;
-      color: #f5f5f5;
-    }
-
-    .container.dark-mode .btn {
-      background-color: #333;
-      color: #fff;
-    }
-
-    .container.dark-mode .footer a {
-      color: #90cdf4;
-    }
-
-    .container.dark-mode .sparkle {
-      fill: #facc15;
-    }
-
-    .dark-mode-toggle {
-      cursor: pointer;
-      margin-left: 10px;
-    }
-
-    .container {
-      transition: background-color 0.3s, color 0.3s;
-      padding: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .btn {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 8px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 5px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn svg {
-      height: 16px;
-      width: 16px;
-    }
-
-    #result {
-      display: none;
-      margin-top: 20px;
-      padding: 10px;
-      border-radius: 8px;
-      background-color: #f0f0f0;
-      font-size: 14px;
-    }
-
-    .container.dark-mode #result {
-      background-color: #2c2c2c;
-      color: #e0e0e0;
-    }
-  </style>
 </head>
 <body>
 
-  <div class="container" id="main-container">
+  <div class="container">
     <div class="header">
       <img src="shield.png" alt="Logo" />
       <h1>TrustAI</h1>
       <div class="icons">
-        <i class="fas fa-moon dark-mode-toggle" title="Toggle Dark Mode"></i>
-        <i class="fas fa-cog" id="settings-icon" title="Settings"></i>
-        <i class="fas fa-times" id="close-icon" title="Close"></i>
+        <i class="fas fa-cog"></i>
+        <i class="fas fa-times"></i>
       </div>
     </div>
 
     <hr>
 
-    <!-- Inside your container -->
-<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-  <tr>
-    <td style="border: none; padding: 10px; text-align: left;font-size:medium;">
-      <img src="url.png" alt="url" height="30px">
-      <strong id="website-name"></strong>
-    </td>
-    <td style="border: none; padding: 10px; text-align: right;">
-      <button class="btn">
-        <svg fill="#FFFFFF" viewBox="0 0 24 24" class="sparkle" width="16" height="16">
-          <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"></path>
-        </svg>
-        <span class="text">AI Review</span>
-      </button>
-    </td>
-  </tr>
-</table>
-
-<div id="result"></div>
-
-
+    <div id="result">Checking...</div>
 
     <hr>
-    <!-- Settings Panel 
-    <div id="settings-panel">
-      <h3>Settings</h3>
-      <div>
-       
-        <p>Settings panel content goes here</p>
-      </div>
-    </div>-->
+<div class="Trust">
+    <button class="btn" id="check-btn">
+      <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" class="sparkle">
+        <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"></path>
+      </svg>
+      <span class="text">Check Trust</span>
+    </button>
 
+
+        <button class="btn" id="ai-review-btn">
+
+      <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" class="sparkle">
+        <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z"></path>
+      </svg>
+      <span class="text">Ai Review </span>
+    </button>
+</div>
     <div class="footer">
-      Version 1.0.0 | <a href="#">Privacy</a>
+      Version 1.0.0 | 
+      <a href="#" style="color:#3b82f6; text-decoration: none;">Privacy</a>
     </div>
   </div>
 
