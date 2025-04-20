@@ -24,34 +24,42 @@ A GPT-powered trust evaluator for checking if e-commerce sites are safe for Cash
 
 ## Installation & Setup
 
-### 1. Clone the repo
 
-```bash
-git clone https://github.com/your-username/trustai-advisor.git
-cd trustai-advisor
+---
 
-### 2. Install dependencies
+## 🛠️ How to Install TrustAI Advisor (Chrome Extension) from GitHub
 
-npm install
+Follow these simple steps to install the TrustAI Advisor extension manually:
 
-3. Run the evaluator
+###  Prerequisites
+- Google Chrome (latest version recommended)
 
-node gpt.mjs
+---
 
-Environment Variables (Optional)
-To use your own API credentials, create a .env file in the root:
+### Step 1: Download the Extension Files
+1. Visit the GitHub repository: [https://github.com/GungunRaniSahu/TrustAi.git]
+2. Click the green **“Code”** button and select **“Download ZIP”**
+3. Extract the downloaded ZIP to a folder on your computer
 
-env
+---
 
-OPENAI_API_KEY=your-openai-api-key
-BASE_URL=https://api.aimlapi.com/v1
+###  Step 2: Load the Extension in Chrome
+1. Open **Google Chrome**
+2. In the address bar, go to:  
+   ```
+   chrome://extensions/
+   ```
+3. Enable **Developer Mode** (top-right corner toggle)
+4. Click on **“Load unpacked”**
+5. Select the folder where you extracted the ZIP file
 
-And make sure your gpt.mjs imports dotenv:
+---
 
-js
+###  Step 3: Use the Extension
+- Once loaded, the **TrustAI Advisor** icon will appear in the extension toolbar
+- Visit any e-commerce site and the extension will analyze and display trust info for the website.
 
-import dotenv from 'dotenv';
-dotenv.config();
+---
 
 Example Output
 text
