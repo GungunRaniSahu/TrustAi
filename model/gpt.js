@@ -5,7 +5,7 @@ require('dotenv').config();
 
 // Initialize OpenAI client
 const client = new OpenAI({
-  apiKey: 'fec7afa05f9f4884b07b00ad266b6203',
+  apiKey: 'YOUR_API_KEY',
   baseURL: 'https://api.aimlapi.com/v1',
 });
 
