@@ -72,11 +72,4 @@ You should not pre-order just yet without additional research. Do the following 
 - Make sure the site uses HTTPS when placing the order.  
 - Prefer Cash on Delivery (COD) if available.
 
- Acknowledgements
-Cheerio
 
-OpenAI
-
-aimlapi.com
-
-yaml
