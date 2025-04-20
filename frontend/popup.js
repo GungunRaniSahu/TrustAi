@@ -1,143 +1,163 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.getElementById('check-btn').addEventListener('click', () => {
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     const tab = tabs[0];
     const url = tab.url;
     const domain = new URL(url).hostname;
-
-    await checkTrustFactors(tab.id, url, domain);
-
-    const websiteNameTd = document.getElementById('website-name');
-    if (websiteNameTd) {
-      websiteNameTd.innerText = domain;
-    }
+    checkTrustFactors(tab.id, url, domain);
   });
+});
 
-  const settingsIcon = document.getElementById('settings-icon');
-  const closeIcon = document.getElementById('close-icon');
-  const settingsPanel = document.getElementById('settings-panel');
-
-  if (settingsIcon && settingsPanel) {
-    if (settingsPanel.style.display === 'none' || settingsPanel.style.display === '') {
-      settingsPanel.style.display = 'block';
-    } else {
-      settingsPanel.style.display = 'none';
+document.getElementById('ai-review-btn').addEventListener('click', async () => {
+  try {
+    // Get the active tab in the current window
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    
+    if (!tab || !tab.url) {
+      console.error("❌ Could not get active tab or URL.");
+      return;
     }
-  }
 
-  if (closeIcon) {
-    closeIcon.addEventListener('click', () => {
-      window.close();
-    });
-  }
+    // Extract the domain from the tab's URL
+    const domain = new URL(tab.url).hostname;
 
-  const darkToggle = document.querySelector('.dark-mode-toggle');
-  const mainContainer = document.getElementById('main-container');
+    // Call your custom function to trigger AI-based review
+    runAIReview(tab.id, domain);
 
-  if (darkToggle && mainContainer) {
-    darkToggle.addEventListener('click', () => {
-      mainContainer.classList.toggle('dark-mode');
-      console.log("Dark mode toggled");
-    });
+  } catch (error) {
+    console.error("❌ Error in AI review button click handler:", error);
   }
 });
 
+
+// ✅ Main Trust Check Function
 async function checkTrustFactors(tabId, url, domain) {
-  const trustItems = [];
+  let results = `<strong>${domain}</strong> Trust Check Results:<br><br>`;
 
-  // 1. HTTPS Check
-  const isHTTPS = url.startsWith("https://");
-  trustItems.push(createResultItem('🔒', 'SSL Secured', isHTTPS ? 'green' : 'red'));
+  const isHTTPS = url.startsWith('https://');
+  results += ` HTTPS: ${isHTTPS ? '✅ Secure' : '❌ Not Secure'}<br>`;
 
-  // 2. PCCI Compliance Check
-  const isPCCICompliant = await checkPCCICompliance(tabId);
-  trustItems.push(createResultItem('📜', 'PCCI Compliant', isPCCICompliant ? 'green' : 'red'));
+  const isPCICompliant = await checkPCICompliance(tabId);
+  results += ` PCI DSS: ${isPCICompliant ? '✅ Likely Compliant' : '❌ Not Detected'}<br>`;
 
-  // 3. DNS Verified (Placeholder)
-  trustItems.push(createResultItem('🌐', 'DNS Verified', 'green'));
+  const hasRefundPolicy = await checkRefundPolicy(tabId);
+  results += ` Refund Policy: ${hasRefundPolicy ? '✅ Found' : '❌ Not Found'}<br>`;
 
-  // 4. Malware Check (Placeholder)
-  trustItems.push(createResultItem('🛡️', 'No Malware Detected', 'green'));
+  const hasAddress = await checkAddressPresence(tabId);
+  results += ` Address: ${hasAddress ? '✅ Present' : '❌ Not Detected'}<br>`;
 
-  // Wrap every 2 items in a flex row
-  let results = '';
-  for (let i = 0; i < trustItems.length; i += 2) {
-    results += `
-      <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
-        ${trustItems[i]}
-        ${trustItems[i + 1] || ''}
-      </div>
-    `;
-  }
-
-  const resultDiv = document.getElementById('result');
-  if (resultDiv) {
-    resultDiv.innerHTML = results;
-    resultDiv.style.display = 'block';
-  }
+  document.getElementById('result').innerHTML = results;
 }
 
-function createResultItem(icon, text, color) {
-  return `
-    <div style="
-      flex: 1;
-      display: flex; 
-      align-items: center; 
-      padding: 10px;
-      border: 1px solid ${color}; 
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      font-size: 14px;
-      color:black;
-    ">
-      <span style="color: ${color}; font-size: 18px; margin-right: 10px;">${icon}</span>
-      <span>${text}</span>
-    </div>
-  `;
-}
-
-async function checkPCCICompliance(tabId) {
+// ✅ PCI DSS Compliance Detection
+async function checkPCICompliance(tabId) {
   return new Promise((resolve) => {
-    chrome.scripting.executeScript(
-      {
-        target: { tabId },
-        func: () => {
-          const bodyText = document.body.innerText.toLowerCase();
-          const keywords = [
-            'pci dss',
-            'pci compliant',
-            'razorpay',
-            'stripe',
-            'paypal',
-            'paytm',
-            'secured by',
-            'ssl secure',
-            'verified by visa',
-            'mastercard securecode',
-            'https://secure.',
-            'trust badge'
-          ];
-
-          const strongKeywords = ['pci dss', 'pci compliant', 'ssl secure'];
-          let score = 0;
-
-          keywords.forEach(keyword => {
-            if (bodyText.includes(keyword)) {
-              score += strongKeywords.includes(keyword) ? 2 : 1;
-            }
-          });
-
-          return score >= 3;
-        },
+    chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => {
+        const text = document.body.innerText.toLowerCase();
+        const html = document.body.innerHTML.toLowerCase();
+        const keywords = [
+          "pci dss", "pci compliant", "pci certified",
+          "payment card industry", "secure payment",
+          "ssl secure", "trust badge", "verified by visa", "secured by mastercard"
+        ];
+        const trustImages = Array.from(document.images).some(img =>
+          img.alt.toLowerCase().includes("secure") ||
+          img.alt.toLowerCase().includes("pci") ||
+          img.alt.toLowerCase().includes("verified") ||
+          img.src.includes("trust") ||
+          img.src.includes("secure")
+        );
+        return keywords.some(keyword => text.includes(keyword)) || trustImages;
       },
-      (result) => {
-        if (chrome.runtime.lastError || !result || !result[0]) {
-          console.error('Error during PCCI check:', chrome.runtime.lastError);
-          resolve(false);
-        } else {
-          resolve(result[0].result);
-        }
-      }
-    );
+    }, (results) => {
+      resolve(results?.[0]?.result || false);
+    });
   });
-  
+}
+
+// ✅ Refund Policy Detection
+async function checkRefundPolicy(tabId) {
+  return new Promise((resolve) => {
+    chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => {
+        const text = document.body.innerText.toLowerCase();
+        const hasRefund = text.includes("refund policy") ||
+          text.includes("refund") ||
+          text.includes("return policy") ||
+          Array.from(document.links).some(link =>
+            link.href.toLowerCase().includes("refund") ||
+            link.href.toLowerCase().includes("return")
+          );
+        return hasRefund;
+      },
+    }, (results) => {
+      resolve(results?.[0]?.result || false);
+    });
+  });
+}
+
+// ✅ Address Detection
+async function checkAddressPresence(tabId) {
+  return new Promise((resolve) => {
+    chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => {
+        const text = document.body.innerText.toLowerCase();
+        const addressIndicators = ["address", "street", "city", "zip", "pincode"];
+        return addressIndicators.some(indicator => text.includes(indicator));
+      },
+    }, (results) => {
+      resolve(results?.[0]?.result || false);
+    });
+  });
+}
+
+// ✅ AI Review Functionality
+async function runAIReview(tabId, domain) {
+  document.getElementById('result').innerHTML = `🤖 Running AI Review for <strong>${domain}</strong>...`;
+
+  chrome.scripting.executeScript({
+    target: { tabId },
+    func: () => {
+      const text = document.body.innerText;
+      return text.length > 1000 ? text.slice(0, 3000) : text;
+    },
+  }, async (results) => {
+    if (!results || !results[0]) {
+      document.getElementById('result').innerHTML = `❌ Could not extract content for AI Review.`;
+      return;
+    }
+
+    const content = results[0].result;
+    const response = await fakeAIReview(content);
+
+    document.getElementById('result').innerHTML = `<strong>${domain}</strong> AI Review:<br><br>${response}`;
+  });
+}
+
+// ✅ Simulated AI Review (Replace with real API if needed)
+async function fakeAIReview(text) {
+  if (text.toLowerCase().includes("scam") || text.toLowerCase().includes("too good to be true")) {
+    return `⚠️ This site contains potentially risky or suspicious content. Be cautious.`;
+  }
+  return `✅ No obvious signs of malicious or deceptive content were detected in a quick scan.`;
+}
+
+// ✅ Toggle Settings Panel
+const settingsIcon = document.getElementById('settings-icon');
+const closeIcon = document.getElementById('close-icon');
+const settingsPanel = document.getElementById('settings-panel');
+
+if (settingsIcon) {
+  settingsIcon.addEventListener('click', () => {
+    settingsPanel.style.display = (settingsPanel.style.display === 'block') ? 'none' : 'block';
+  });
+}
+
+if (closeIcon) {
+  closeIcon.addEventListener('click', () => {
+    window.close();
+  });
 }
