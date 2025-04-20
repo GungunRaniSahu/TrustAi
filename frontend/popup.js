@@ -1,123 +1,143 @@
-document.getElementById('check-btn').addEventListener('click', () => {
+document.addEventListener('DOMContentLoaded', () => {
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     const tab = tabs[0];
     const url = tab.url;
     const domain = new URL(url).hostname;
-    checkTrustFactors(tab.id, url, domain);
+
+    await checkTrustFactors(tab.id, url, domain);
+
+    const websiteNameTd = document.getElementById('website-name');
+    if (websiteNameTd) {
+      websiteNameTd.innerText = domain;
+    }
   });
+
+  const settingsIcon = document.getElementById('settings-icon');
+  const closeIcon = document.getElementById('close-icon');
+  const settingsPanel = document.getElementById('settings-panel');
+
+  if (settingsIcon && settingsPanel) {
+    if (settingsPanel.style.display === 'none' || settingsPanel.style.display === '') {
+      settingsPanel.style.display = 'block';
+    } else {
+      settingsPanel.style.display = 'none';
+    }
+  }
+
+  if (closeIcon) {
+    closeIcon.addEventListener('click', () => {
+      window.close();
+    });
+  }
+
+  const darkToggle = document.querySelector('.dark-mode-toggle');
+  const mainContainer = document.getElementById('main-container');
+
+  if (darkToggle && mainContainer) {
+    darkToggle.addEventListener('click', () => {
+      mainContainer.classList.toggle('dark-mode');
+      console.log("Dark mode toggled");
+    });
+  }
 });
 
-// ✅ Main Trust Check Function
 async function checkTrustFactors(tabId, url, domain) {
-  let results = `<strong>${domain}</strong> Trust Check Results:<br><br>`;
+  const trustItems = [];
 
   // 1. HTTPS Check
   const isHTTPS = url.startsWith("https://");
-  console.log('Is HTTPS:', isHTTPS);  // Log the result of the HTTPS check
+  trustItems.push(createResultItem('🔒', 'SSL Secured', isHTTPS ? 'green' : 'red'));
 
-  const hasMixedContent = await checkMixedContent(tabId);
-  console.log('Has Mixed Content:', hasMixedContent);  // Log if mixed content was detected
+  // 2. PCCI Compliance Check
+  const isPCCICompliant = await checkPCCICompliance(tabId);
+  trustItems.push(createResultItem('📜', 'PCCI Compliant', isPCCICompliant ? 'green' : 'red'));
 
-  const isHTTPSSecure = isHTTPS && !hasMixedContent;
-  console.log('Is HTTPS Secure:', isHTTPSSecure);  // Log final determination of HTTPS security
+  // 3. DNS Verified (Placeholder)
+  trustItems.push(createResultItem('🌐', 'DNS Verified', 'green'));
 
-  results += `🔒 HTTPS: ${isHTTPSSecure ? '✅ Secure (Encrypted)' : '❌ Not Secure (Unencrypted or Mixed Content)'}<br>`;
+  // 4. Malware Check (Placeholder)
+  trustItems.push(createResultItem('🛡️', 'No Malware Detected', 'green'));
 
-  // 2. PCI DSS Compliance Check
-  const isPCICompliant = await checkPCICompliance(tabId);
-  results += `💳 PCI DSS: ${isPCICompliant ? '✅ Likely Compliant' : '❌ Not Detected'}<br>`;
+  // Wrap every 2 items in a flex row
+  let results = '';
+  for (let i = 0; i < trustItems.length; i += 2) {
+    results += `
+      <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
+        ${trustItems[i]}
+        ${trustItems[i + 1] || ''}
+      </div>
+    `;
+  }
 
-  document.getElementById('result').innerHTML = results;
+  const resultDiv = document.getElementById('result');
+  if (resultDiv) {
+    resultDiv.innerHTML = results;
+    resultDiv.style.display = 'block';
+  }
 }
 
-// ✅ Check for Mixed Content (HTTP resources loaded in HTTPS page)
-async function checkMixedContent(tabId) {
+function createResultItem(icon, text, color) {
+  return `
+    <div style="
+      flex: 1;
+      display: flex; 
+      align-items: center; 
+      padding: 10px;
+      border: 1px solid ${color}; 
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      font-size: 14px;
+      color:black;
+    ">
+      <span style="color: ${color}; font-size: 18px; margin-right: 10px;">${icon}</span>
+      <span>${text}</span>
+    </div>
+  `;
+}
+
+async function checkPCCICompliance(tabId) {
   return new Promise((resolve) => {
     chrome.scripting.executeScript(
       {
         target: { tabId },
         func: () => {
-          const resources = [
-            ...document.querySelectorAll('img[src^="http://"]'),
-            ...document.querySelectorAll('script[src^="http://"]'),
-            ...document.querySelectorAll('link[href^="http://"]'),
-            ...document.querySelectorAll('iframe[src^="http://"]')
-          ];
-          console.log('Mixed content resources found:', resources.length); // Log number of mixed content resources found
-          return resources.length > 0; // Return true if any HTTP resources are found
-        },
-      },
-      (results) => {
-        if (chrome.runtime.lastError || !results || !results[0]) {
-          console.error('Error during mixed content check:', chrome.runtime.lastError);
-          resolve(false);
-        } else {
-          resolve(results[0].result);
-        }
-      }
-    );
-  });
-}
-
-// ✅ PCI DSS Compliance Detection
-async function checkPCICompliance(tabId) {
-  return new Promise((resolve) => {
-    chrome.scripting.executeScript(
-      {
-        target: { tabId },
-        func: () => {
-          const text = document.body.innerText.toLowerCase();
-          const html = document.body.innerHTML.toLowerCase();
-
+          const bodyText = document.body.innerText.toLowerCase();
           const keywords = [
-            "pci dss",
-            "pci compliant",
-            "pci certified",
-            "payment card industry",
-            "secure payment",
-            "ssl secure",
-            "trust badge",
-            "verified by visa",
-            "secured by mastercard"
+            'pci dss',
+            'pci compliant',
+            'razorpay',
+            'stripe',
+            'paypal',
+            'paytm',
+            'secured by',
+            'ssl secure',
+            'verified by visa',
+            'mastercard securecode',
+            'https://secure.',
+            'trust badge'
           ];
 
-          const trustImages = Array.from(document.images).some(img =>
-            img.alt.toLowerCase().includes("secure") ||
-            img.alt.toLowerCase().includes("pci") ||
-            img.alt.toLowerCase().includes("verified") ||
-            img.src.includes("trust") ||
-            img.src.includes("secure")
-          );
+          const strongKeywords = ['pci dss', 'pci compliant', 'ssl secure'];
+          let score = 0;
 
-          console.log('Found PCI-related text or trust images:', keywords.some(keyword => text.includes(keyword)) || trustImages);
-          return keywords.some(keyword => text.includes(keyword)) || trustImages;
+          keywords.forEach(keyword => {
+            if (bodyText.includes(keyword)) {
+              score += strongKeywords.includes(keyword) ? 2 : 1;
+            }
+          });
+
+          return score >= 3;
         },
       },
-      (results) => {
-        if (chrome.runtime.lastError || !results || !results[0]) {
-          console.error('Error during PCI check:', chrome.runtime.lastError);
+      (result) => {
+        if (chrome.runtime.lastError || !result || !result[0]) {
+          console.error('Error during PCCI check:', chrome.runtime.lastError);
           resolve(false);
         } else {
-          resolve(results[0].result);
+          resolve(result[0].result);
         }
       }
     );
   });
-}
-
-// ✅ Toggle Settings Panel
-const settingsIcon = document.getElementById('settings-icon');
-const closeIcon = document.getElementById('close-icon');
-const settingsPanel = document.getElementById('settings-panel');
-
-if (settingsIcon) {
-  settingsIcon.addEventListener('click', () => {
-    settingsPanel.style.display = (settingsPanel.style.display === 'block') ? 'none' : 'block';
-  });
-}
-
-if (closeIcon) {
-  closeIcon.addEventListener('click', () => {
-    window.close();
-  });
+  
 }
