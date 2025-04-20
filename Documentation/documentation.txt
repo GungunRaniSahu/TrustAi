@@ -1,26 +1,20 @@
 TrustAI Advisor – Simple Technical Documentation
-Problem Statement
+Problem Statement : 
 Today, many people shop online — but not all websites are safe. Some fake websites look real and attractive by:
 
 Showing huge discounts like "90% OFF!"
-
 Adding fake customer reviews
-
 Hiding real contact or refund details
-
-Using scammy payment methods
-
-and not being honest to their job 
-
+Using scammy payment methods and not being honest to their job 
 People often fall for these tricks and lose money or personal info. We needed a smart solution to check if a website is trustworthy before ordering.
 
 Our Solution: TrustAI Advisor
 TrustAI Advisor is a tool that uses Artificial Intelligence (AI) to analyze any shopping website and tells users:
-
+Uses smart AI to give easy answers.
 Whether the website is safe for online shopping
-
-What things look good (trust points)
-
+Can be turned into a Chrome extension.
+Saves users from fake online stores.
+Browser Extension – A Chrome extension that shows trust results while browsing.
 What things are suspicious (red flags)
 
 It gives a human-like summary in simple words to help users decide:
@@ -69,26 +63,12 @@ Customer reviews , Contact details , Refund or return policies , Trust badges (l
  The summary is printed for the user to read.
 
  Future Improvements
-Here’s how we can make TrustAI Advisor better:
-
 Live Site Checker – Instead of uploading HTML, fetch website data automatically.
-
-Browser Extension – A Chrome extension that shows trust results while browsing.
-
 Trust Score – Add a number (e.g., 8/10 safe) to help users decide quickly.
-
 Multi-language Support – Give output in Hindi, Bengali, etc. for wider reach.
-
 Report Button – Let users report fake sites to build a safe shopping database.
-
 Fake Review Detection – Analyze patterns to catch copied or AI-generated reviews.
-
- Summary (Why It’s Useful)
-Saves users from fake online stores.
-
-Uses smart AI to give easy answers.
-
-Can be turned into a Chrome extension later.
-
+What things look good (trust points)
+Summary (Why It’s Useful)
 Helps Indian users (especially in Tier-2, Tier-3 cities) trust COD sites.
 
