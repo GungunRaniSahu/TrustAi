@@ -1,10 +1,8 @@
-body {
+   body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #f9f9f9;
       margin: 0;
       padding: 0;
-      width: max-content;
-
     }
 
     .container {
@@ -41,14 +39,13 @@ body {
     }
 
     #result {
+      text-align: center;
       font-size: 1rem;
       padding: 15px;
       color: #333;
       background-color: #f3f4f6;
       border-radius: 8px;
-     /* margin: 20px 0;*/
-      text-align:center;
-      gap: 10px;
+      margin: 20px 0;
     }
 
     .footer {
@@ -94,13 +91,13 @@ body {
 .sparkle {
   fill: #AAAAAA;
   transition: all 800ms ease;
-
 }
 
 .text {
   font-weight: 600;
   color: #AAAAAA;
   font-size: medium;
+  
 }
 
 .btn:hover {
@@ -120,11 +117,3 @@ body {
   fill: white;
   transform: scale(1.2);
 } 
-
-.Trust
-{
-    display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
